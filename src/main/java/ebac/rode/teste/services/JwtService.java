@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
-    @Autowired
     JwtEncoder encoder;
+
+    public JwtService(JwtEncoder encoder) {        this.encoder = encoder;
+    }
 
     private static final String ISSUER = "EBAC-TASKER";
     public static final long EXPIRES_IN = 3_600L;

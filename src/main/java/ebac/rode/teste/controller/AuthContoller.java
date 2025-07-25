@@ -4,6 +4,7 @@ import ebac.rode.teste.controller.dto.LoginRequestDto;
 import ebac.rode.teste.controller.dto.LoginResponseDto;
 import ebac.rode.teste.controller.dto.RegisterRequestDto;
 import ebac.rode.teste.controller.dto.RegisterResponseDto;
+import ebac.rode.teste.exceptions.LoginException;
 import ebac.rode.teste.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class AuthContoller {
         return authService.register(register);
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto login){
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto login) throws LoginException {
         return authService.login(login);
     }
 

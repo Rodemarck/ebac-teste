@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: eu
+      MYSQL_PASSWORD: 123
+      MYSQL_DATABASE: db
+      MYSQL_ROOT_PASSWORD: 123
+    networks:
+      - app-network
+
+  app:
+    build: .
+    container_name: java_app_container
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db
+      SPRING_DATASOURCE_USERNAME: eu
+      SPRING_DATASOURCE_PASSWORD: 123
+    networks:
+      - app-network
+    command: ["java", "-jar", "/app.jar"]
+
+networks:
+  app-network:
+    driver: bridge

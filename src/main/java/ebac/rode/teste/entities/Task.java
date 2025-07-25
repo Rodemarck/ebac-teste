@@ -3,13 +3,12 @@ package ebac.rode.teste.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
@@ -27,22 +26,20 @@ public class Task {
 
     @Column(name = "titulo", nullable = false)
     @NotBlank
-    @Min(value = 3,message = "O título da tarefa está muito curto.")
-    @Max(value = 200, message = "O título da tarefa está muito grande.")
+    @Length(min = 3, max = 200)
     private String title;
 
     @Column(name = "descricao",columnDefinition = "varchar(8000)",nullable = false )
-    @NotBlank(message = "O Campo descrição está em branco.")
-    @Min(value = 3,message = "A descrição está muito curta.")
-    @Max(value = 8000, message = "A descrição está muito longa.")
+    @Length(min = 3,max = 8000)
     private String description;
 
     @Column(name = "vencimento", nullable = false)
-    @NotBlank(message = "O campo data de vencimento está em branco.")
+    @NotNull
+    @FutureOrPresent()
     private LocalDateTime deadLine;
 
     @Column(name = "status", nullable = false)
-    @NotBlank(message = "O Campo status está em branco.")
+    @NotNull()
     private Status status;
 
     @ManyToOne
@@ -57,5 +54,16 @@ public class Task {
         Status(String valor){
             this.valor = valor;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Task(" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", deadLine=" + deadLine +
+                ", status=" + status +
+                ')';
     }
 }

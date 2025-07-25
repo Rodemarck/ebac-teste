@@ -14,13 +14,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    @Autowired
     private JwtService jwtService;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    public AuthService(JwtService jwtService, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public ResponseEntity<RegisterResponseDto> register(RegisterRequestDto register) {
         userRepository.save(User.builder().email(register.email()).hash(passwordEncoder.encode(register.password())).build());
@@ -28,7 +30,7 @@ public class AuthService {
         return ResponseEntity.ok(new RegisterResponseDto());
     }
 
-    public ResponseEntity<LoginResponseDto> login(LoginRequestDto login) {
+    public ResponseEntity<LoginResponseDto> login(LoginRequestDto login) throws LoginException {
         var user = userRepository.findByEmail(login.email());
         if(user.isEmpty() || !user.get().testLogin(login,passwordEncoder)){
             throw new LoginException();

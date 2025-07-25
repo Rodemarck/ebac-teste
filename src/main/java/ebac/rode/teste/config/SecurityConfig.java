@@ -48,12 +48,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
 
         http
-                .authorizeHttpRequests(auth ->auth.requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated())
-                .csrf(csrf->csrf.disable())
-                .oauth2ResourceServer(oauth2->oauth2.jwt(Customizer.withDefaults()))
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()  // Permite acesso a qualquer URL que comece com /auth
+                        .anyRequest().permitAll())  // Permite todas as requisições, sem necessidade de autenticação
+                .csrf(csrf -> csrf.disable())  // Desabilita CSRF (não é recomendado em produção, mas para testes é ok)
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(request -> {
+                    var config = new org.springframework.web.cors.CorsConfiguration();
+                    config.addAllowedOrigin("*"); // Permite qualquer origem
+                    config.addAllowedMethod("*"); // Permite todos os métodos HTTP
+                    config.addAllowedHeader("*"); // Permite todos os cabeçalhos
+                    return config;
+                }))
         ;
         return http.build();
     }
