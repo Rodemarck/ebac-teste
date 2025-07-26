@@ -20,28 +20,32 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<ListTaskResponseDto> listTasks(Authentication auth, HttpServletRequest request){
-        System.out.println("auth");
-        System.out.println(request.getHeader("Authorization"));
+        System.out.println("list");
         return taskService.list(auth);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetTaskResponseDto> getTask(@PathVariable("id") Long id, Authentication auth){
+        System.out.println("get");
         return taskService.get(id, auth);
     }
 
     @PostMapping
     public ResponseEntity<RegisterTaskResponseDto> registerTask(@RequestBody @Valid RegisterTaskRequestDto register, Authentication auth){
+        System.out.println("register");
         return taskService.register(register, auth);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateTask(@RequestBody @Valid UpdateTaskRequestDto update, Authentication auth){
+    @PatchMapping
+    public ResponseEntity updateTask(@RequestBody @Valid UpdateTaskRequestDto update, Authentication auth){
+        System.out.println("update");
         return taskService.update(update, auth);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathParam("id") Long id, Authentication auth){
+        @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id,HttpServletRequest request, Authentication auth){
+        System.out.println("delete");
+        System.out.println(request.getRequestURI());
         return taskService.delete(id, auth);
     }
 

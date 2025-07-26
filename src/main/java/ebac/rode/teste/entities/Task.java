@@ -34,7 +34,6 @@ public class Task {
     private String description;
 
     @Column(name = "vencimento", nullable = false)
-    @NotNull
     @FutureOrPresent()
     private LocalDateTime deadLine;
 

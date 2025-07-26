@@ -5,24 +5,19 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
 public record UpdateTaskRequestDto (
-        @NotBlank
         long id,
         @NotBlank
-        @Min(value = 3)
-        @Max(value = 200)
+        @Length(min = 3,max = 200)
         String title,
-        @NotBlank
         @FutureOrPresent()
         LocalDateTime deadLine,
-        @NotBlank()
         Task.Status status,
-        @NotBlank()
-        @Min(value = 3)
-        @Max(value = 8000)
+        @Length(min = 3, max = 8000)
         String description
 ){
 }

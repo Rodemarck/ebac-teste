@@ -19,6 +19,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
+        if(request.getRequestURI().startsWith("/auth")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // Se o token não estiver presente ou estiver vazio
         if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
             throw new UserNotFoundException();

@@ -42,6 +42,8 @@ public class ErroController {
 
         map.put("Errors:",mapErros);
 
+        System.out.println(map);
+        ex.printStackTrace();
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
 
@@ -64,11 +66,14 @@ public class ErroController {
 
         map.put("Errors:",mapErros);
 
+        System.out.println(map);
+        ex.printStackTrace();
         return new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> RuntimeException(RuntimeException ex, HttpServletRequest request){
+        ex.printStackTrace();
         return new ResponseEntity<>("faiou",HttpStatus.UNAUTHORIZED);
     }
     @ExceptionHandler(TaskNotFoundException.class)
@@ -89,6 +94,8 @@ public class ErroController {
 
         map.put("Errors:",mapErros);
 
+        System.out.println(map);
+        ex.printStackTrace();
         return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
     }
 
@@ -110,6 +117,8 @@ public class ErroController {
 
         map.put("Errors:",mapErros);
 
+        System.out.println(map);
+        ex.printStackTrace();
         return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
     }
 
@@ -131,7 +140,8 @@ public class ErroController {
 
 
         map.put("Errors:",mapErros);
-
+        System.out.println(map);
+        ex.printStackTrace();
         return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
     }
 
@@ -145,7 +155,10 @@ public class ErroController {
             put("erro","Internal Server Error");
         }});
         map.put("message",ex.getMessage());
-        return ResponseEntity.ok(map);
+
+        System.out.println(map);
+        ex.printStackTrace();
+        return new ResponseEntity<>(map,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

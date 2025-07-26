@@ -31,11 +31,13 @@ public class TaskService {
     }
 
     public ResponseEntity<ListTaskResponseDto> list(Authentication auth) {
+        System.out.println("list");
         var user = getUser(auth);
         return ResponseEntity.ok(new ListTaskResponseDto(taskRepository.findByUser(user)));
     }
 
     public ResponseEntity<GetTaskResponseDto> get(Long id, Authentication auth) {
+        System.out.println("get");
         var user = getUser(auth);
         var task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         if(!task.getUser().equals(user)){
@@ -45,6 +47,7 @@ public class TaskService {
     }
 
     public ResponseEntity<RegisterTaskResponseDto> register(RegisterTaskRequestDto register, Authentication auth) {
+        System.out.println("register");
         var user = getUser(auth);
         var task = Task.builder()
                 .title(register.title())
@@ -62,7 +65,8 @@ public class TaskService {
         return ResponseEntity.ok(new RegisterTaskResponseDto(task.getId()));
     }
 
-    public ResponseEntity<Void> update(UpdateTaskRequestDto update, Authentication auth) {
+    public ResponseEntity update(UpdateTaskRequestDto update, Authentication auth) {
+        System.out.println("update");
         var user = getUser(auth);
         var task = taskRepository.findById(update.id()).orElseThrow(TaskNotFoundException::new);
         if(!task.getUser().equals(user)){
@@ -72,10 +76,12 @@ public class TaskService {
         task.setTitle(update.title());
         task.setStatus(update.status());
         task.setDeadLine(update.deadLine());
+        taskRepository.saveAndFlush(task);
         return ResponseEntity.ok(null);
     }
 
     public ResponseEntity<Void> delete(Long id, Authentication auth) {
+        System.out.println("delete");
         var user = getUser(auth);
         var task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         if(!task.getUser().equals(user)){
